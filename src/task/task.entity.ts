@@ -2,6 +2,7 @@ import { Board } from '../board/board.entity';
 import { User } from '../user/user.entity';
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   ManyToMany,
   ManyToOne,
@@ -38,4 +39,7 @@ export class Task {
   @ApiProperty()
   @Column()
   boardId: number;
+
+  @DeleteDateColumn({ select: false })
+  deletedAt?: Date;
 }

@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BoardModule } from './board/board.module';
+import { TaskModule } from './task/task.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -35,6 +36,7 @@ import configuration from './config/configuration';
     UserModule,
     AuthModule,
     BoardModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],
