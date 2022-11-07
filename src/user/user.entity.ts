@@ -3,8 +3,12 @@ import {
   Column,
   PrimaryGeneratedColumn,
   DeleteDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { Board } from '../board/board.entity';
+import { Task } from '../task/task.entity';
 
 export enum UserRole {
   Admin = 'admin',
@@ -38,6 +42,14 @@ export class User {
 
   @Column({ default: false })
   verified: boolean;
+
+  @ManyToMany(() => Board, (board) => board.owner)
+  @JoinTable()
+  boards: Board[];
+
+  @ManyToMany(() => Task, (task) => task.users)
+  @JoinTable()
+  tasks: Task[];
 
   @DeleteDateColumn({ select: false })
   deletedAt?: Date;
