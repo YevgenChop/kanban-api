@@ -9,6 +9,7 @@ import {
 import { Exclude } from 'class-transformer';
 import { Board } from '../board/board.entity';
 import { Task } from '../task/task.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 export enum UserRole {
   Admin = 'admin',
@@ -17,15 +18,19 @@ export enum UserRole {
 
 @Entity()
 export class User {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column({ unique: true })
   login: string;
 
+  @ApiProperty()
   @Column({ unique: true })
   name: string;
 
+  @ApiProperty()
   @Column({ unique: true })
   email: string;
 
@@ -33,6 +38,7 @@ export class User {
   @Column({ select: false })
   password: string;
 
+  @ApiProperty()
   @Column({
     type: 'enum',
     enum: UserRole,

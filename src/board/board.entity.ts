@@ -2,6 +2,7 @@ import { Task } from 'src/task/task.entity';
 import { User } from 'src/user/user.entity';
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   ManyToMany,
   OneToMany,
@@ -27,4 +28,7 @@ export class Board {
 
   @Column()
   ownerId: number;
+
+  @DeleteDateColumn({ select: false })
+  deletedAt?: Date;
 }

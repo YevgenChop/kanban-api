@@ -11,6 +11,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Public } from '../decorators/public.decorator';
@@ -24,6 +25,7 @@ import { UpdateUserDocs } from './swagger/update-user.swagger-docs';
 import { User as UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
+@ApiTags('user')
 @UseInterceptors(ClassSerializerInterceptor)
 @UseGuards(RolesGuard)
 @Controller('user')
