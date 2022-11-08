@@ -9,8 +9,13 @@ import { User } from './user.entity';
 export class UserRepository {
   constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
 
-  public createUser(dto: CreateUserDto): Promise<User> {
-    return this.userRepo.save(this.userRepo.create(dto));
+  public createUser(
+    dto: CreateUserDto,
+    verificationToken: string,
+  ): Promise<User> {
+    return this.userRepo.save(
+      this.userRepo.create({ ...dto, verificationToken }),
+    );
   }
 
   public async updateUser(id: number, dto: UpdateUserDto): Promise<void> {
@@ -19,6 +24,13 @@ export class UserRepository {
 
   public async softDeleteUser(id: number): Promise<void> {
     await this.userRepo.softDelete({ id });
+  }
+
+  public async verifyUser(id: number): Promise<void> {
+    await this.userRepo.update(
+      { id },
+      { verified: true, verificationToken: null },
+    );
   }
 
   public findOneByEmail(email: string): Promise<User> {

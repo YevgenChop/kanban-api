@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
@@ -35,7 +36,7 @@ export class TaskController {
   }
 
   @UpdateTaskDocs()
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Patch(':id')
   public updateTask(
     @Body() dto: UpdateTaskDto,

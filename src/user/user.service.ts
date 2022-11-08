@@ -4,47 +4,59 @@ import { UserAlreadyExistsException } from './errors/user-already-exists.exeptio
 import { User } from './user.entity';
 import { UserRepository } from './user.repository';
 import * as bcrypt from 'bcryptjs';
-import { UserDto } from './dto/user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserNotFoundException } from './errors/user-not-found.exeption';
+import { EmailService } from 'src/auth/email.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private userRepo: UserRepository,
     private jwtService: JwtService,
+    private emailService: EmailService,
   ) {}
 
   public async createUser({
     password: plainTextPassword,
     ...userData
-  }: CreateUserDto): Promise<UserDto> {
+  }: CreateUserDto): Promise<void> {
     const userExists = !!(await this.userRepo.findOneByEmail(userData.email));
     if (userExists) throw new UserAlreadyExistsException();
 
     const hashedPassword = await bcrypt.hashSync(plainTextPassword, 10);
+    const verificationToken = this.jwtService.sign({ email: userData.email });
 
-    const { password, ...user } = await this.userRepo.createUser({
-      ...userData,
-      password: hashedPassword,
-    });
+    await this.userRepo.createUser(
+      {
+        ...userData,
+        password: hashedPassword,
+      },
+      verificationToken,
+    );
 
-    return { ...user, token: this.jwtService.sign({ id: user.id }) };
+    await this.emailService.sendVerificationEmail(
+      userData.email,
+      verificationToken,
+    );
   }
 
-  public async updateUser(user: User, dto: UpdateUserDto): Promise<void> {
+  public async updateUser(id: number, dto: UpdateUserDto): Promise<void> {
     if (dto.password) {
       const { password, ...rest } = dto;
       const hashedPassword = await bcrypt.hashSync(password, 10);
 
-      return this.userRepo.updateUser(user.id, {
+      return this.userRepo.updateUser(id, {
         ...rest,
         password: hashedPassword,
       });
     }
 
-    return this.userRepo.updateUser(user.id, dto);
+    return this.userRepo.updateUser(id, dto);
+  }
+
+  public verifyUser(id: number): Promise<void> {
+    return this.userRepo.verifyUser(id);
   }
 
   public async deleteUser(id: number): Promise<void> {
@@ -63,5 +75,9 @@ export class UserService {
 
   public findOneWithPassword(login: string): Promise<User> {
     return this.userRepo.findOneWithPassword(login);
+  }
+
+  public findOneByOrFail(options: Partial<User>): Promise<User> {
+    return this.userRepo.findOneOrFail(options);
   }
 }

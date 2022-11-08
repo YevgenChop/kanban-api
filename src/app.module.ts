@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BoardModule } from './board/board.module';
 import { TaskModule } from './task/task.module';
 import configuration from './config/configuration';
+import { SendGridModule } from '@ntegral/nestjs-sendgrid';
 
 @Module({
   imports: [
@@ -28,6 +29,17 @@ import configuration from './config/configuration';
           entities: ['dist/**/*.entity{.ts,.js}'],
         };
       },
+      inject: [ConfigService],
+    }),
+    SendGridModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        apiKey: configService.get('SENDGRID_API_KEY'),
+        defaultMailData: {
+          from: configService.get('SENDGRID_FROM'),
+          text: '',
+        },
+      }),
       inject: [ConfigService],
     }),
     ConfigModule.forRoot({

@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
@@ -36,7 +37,7 @@ export class BoardController {
     return this.boardService.createBoard(dto, id);
   }
 
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @UpdateBoardDocs()
   @Patch(':id')
   public updateBoard(
@@ -55,7 +56,7 @@ export class BoardController {
     return this.boardService.getBoards(ownerId);
   }
 
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @DeleteBoardDocs()
   @Delete(':id')
   public deleteBoard(

@@ -49,6 +49,9 @@ export class User {
   @Column({ default: false })
   verified: boolean;
 
+  @Column({ nullable: true, select: false })
+  verificationToken: string | null;
+
   @ManyToMany(() => Board, (board) => board.owner)
   @JoinTable()
   boards: Board[];

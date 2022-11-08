@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   HttpCode,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Post,
@@ -18,11 +19,9 @@ import { Public } from '../decorators/public.decorator';
 import { User } from '../decorators/user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserDto } from './dto/user.dto';
 import { CreateUserDocs } from './swagger/create-user.swagger-docs';
 import { DeleteUserDocs } from './swagger/delete-user.swagger-docs';
 import { UpdateUserDocs } from './swagger/update-user.swagger-docs';
-import { User as UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
 @ApiTags('user')
@@ -33,23 +32,24 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Public()
+  @HttpCode(HttpStatus.NO_CONTENT)
   @CreateUserDocs()
   @Post()
-  public createUser(@Body() dto: CreateUserDto): Promise<UserDto> {
+  public createUser(@Body() dto: CreateUserDto): Promise<void> {
     return this.userService.createUser(dto);
   }
 
   @UpdateUserDocs()
   @Put()
   public updateUser(
-    @User() user: UserEntity,
+    @User('id') id: number,
     @Body() dto: UpdateUserDto,
   ): Promise<void> {
-    return this.userService.updateUser(user, dto);
+    return this.userService.updateUser(id, dto);
   }
 
   @DeleteUserDocs()
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Roles('admin')
   @Delete('/:id')
   public deleteUpdate(@Param('id', ParseIntPipe) id: number): Promise<void> {
