@@ -42,7 +42,7 @@ export class UserController {
   @UpdateUserDocs()
   @Put()
   public updateUser(
-    @User('id') id: number,
+    @User('id') id: string,
     @Body() dto: UpdateUserDto,
   ): Promise<void> {
     return this.userService.updateUser(id, dto);
@@ -52,7 +52,7 @@ export class UserController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Roles('admin')
   @Delete('/:id')
-  public deleteUpdate(@Param('id', ParseIntPipe) id: number): Promise<void> {
+  public deleteUpdate(@Param('id') id: string): Promise<void> {
     return this.userService.deleteUser(id);
   }
 }

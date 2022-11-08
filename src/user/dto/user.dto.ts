@@ -44,6 +44,6 @@ export class UserDto {
    * @example 1
    */
   @IsPositive()
-  @ApiProperty({ type: 'number', example: 1 })
-  id: number;
+  @ApiProperty({ type: 'string', example: '1' })
+  id: string;
 }

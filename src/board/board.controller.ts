@@ -32,7 +32,7 @@ export class BoardController {
   @Post()
   public createBoard(
     @Body() dto: CreateBoardDto,
-    @User('id') id: number,
+    @User('id') id: string,
   ): Promise<BoardDto> {
     return this.boardService.createBoard(dto, id);
   }
@@ -43,7 +43,7 @@ export class BoardController {
   public updateBoard(
     @Body() dto: UpdateBoardDto,
     @User() user: UserEntity,
-    @Param('id', ParseIntPipe) boardId: number,
+    @Param('id') boardId: string,
   ): Promise<void> {
     return this.boardService.updateBoard(dto, user, boardId);
   }
@@ -51,7 +51,7 @@ export class BoardController {
   @GetBoardsDocs()
   @Get()
   public getBoardsByOwnerId(
-    @Query('ownerId', ParseIntPipe) ownerId: number,
+    @Query('ownerId') ownerId: string,
   ): Promise<BoardDto[]> {
     return this.boardService.getBoards(ownerId);
   }
@@ -60,7 +60,7 @@ export class BoardController {
   @DeleteBoardDocs()
   @Delete(':id')
   public deleteBoard(
-    @Param('id', ParseIntPipe) boardId: number,
+    @Param('id') boardId: string,
     @User() user: UserEntity,
   ): Promise<void> {
     return this.boardService.deleteBoard(boardId, user);

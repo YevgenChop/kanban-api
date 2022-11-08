@@ -6,17 +6,13 @@ import {
   Entity,
   ManyToMany,
   ManyToOne,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Status } from './status.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { BaseEntity } from '../shared/base.entity';
 
 @Entity()
-export class Task {
-  @ApiProperty()
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Task extends BaseEntity {
   @ApiProperty()
   @Column()
   title: string;
@@ -38,7 +34,7 @@ export class Task {
 
   @ApiProperty()
   @Column()
-  boardId: number;
+  boardId: string;
 
   @DeleteDateColumn({ select: false })
   deletedAt?: Date;

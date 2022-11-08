@@ -18,15 +18,15 @@ export class UserRepository {
     );
   }
 
-  public async updateUser(id: number, dto: UpdateUserDto): Promise<void> {
+  public async updateUser(id: string, dto: UpdateUserDto): Promise<void> {
     await this.userRepo.update({ id }, { ...dto });
   }
 
-  public async softDeleteUser(id: number): Promise<void> {
+  public async softDeleteUser(id: string): Promise<void> {
     await this.userRepo.softDelete({ id });
   }
 
-  public async verifyUser(id: number): Promise<void> {
+  public async verifyUser(id: string): Promise<void> {
     await this.userRepo.update(
       { id },
       { verified: true, verificationToken: null },

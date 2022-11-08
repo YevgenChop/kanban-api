@@ -41,7 +41,7 @@ export class UserService {
     );
   }
 
-  public async updateUser(id: number, dto: UpdateUserDto): Promise<void> {
+  public async updateUser(id: string, dto: UpdateUserDto): Promise<void> {
     if (dto.password) {
       const { password, ...rest } = dto;
       const hashedPassword = await bcrypt.hashSync(password, 10);
@@ -55,11 +55,11 @@ export class UserService {
     return this.userRepo.updateUser(id, dto);
   }
 
-  public verifyUser(id: number): Promise<void> {
+  public verifyUser(id: string): Promise<void> {
     return this.userRepo.verifyUser(id);
   }
 
-  public async deleteUser(id: number): Promise<void> {
+  public async deleteUser(id: string): Promise<void> {
     try {
       await this.userRepo.findOneOrFail({ id });
     } catch (error) {

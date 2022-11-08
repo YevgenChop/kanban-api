@@ -9,14 +9,14 @@ import { BoardNotFoundException } from './errors/board-not-found.exception';
 @Injectable()
 export class BoardService {
   constructor(private boardRepo: BoardRepository) {}
-  public createBoard(dto: CreateBoardDto, userId: number): Promise<Board> {
+  public createBoard(dto: CreateBoardDto, userId: string): Promise<Board> {
     return this.boardRepo.createBoard(dto, userId);
   }
 
   public async updateBoard(
     dto: UpdateBoardDto,
     user: User,
-    boardId: number,
+    boardId: string,
   ): Promise<void> {
     let board: Board;
 
@@ -33,11 +33,11 @@ export class BoardService {
     await this.boardRepo.updateBoard(dto, boardId);
   }
 
-  public getBoards(ownerId: number): Promise<Board[]> {
+  public getBoards(ownerId: string): Promise<Board[]> {
     return this.boardRepo.findBy({ ownerId });
   }
 
-  public async deleteBoard(boardId: number, user: User): Promise<void> {
+  public async deleteBoard(boardId: string, user: User): Promise<void> {
     let board: Board;
 
     try {

@@ -3,11 +3,11 @@ import { Task } from '../../task/task.entity';
 import { CreateBoardDto } from './create-board.dto';
 
 export class BoardDto extends CreateBoardDto {
-  @ApiProperty({ type: 'number', example: 1 })
-  public id: number;
+  @ApiProperty({ type: 'string', example: 1 })
+  public id: string;
 
-  @ApiProperty({ type: 'number', example: 1 })
-  public ownerId: number;
+  @ApiProperty({ type: 'string', example: 1 })
+  public ownerId: string;
 
   @ApiProperty({
     type: [Task],

@@ -9,7 +9,7 @@ import { UpdateBoardDto } from './dto/update-board.dto';
 export class BoardRepository {
   constructor(@InjectRepository(Board) private boardRepo: Repository<Board>) {}
 
-  public createBoard(dto: CreateBoardDto, userId: number): Promise<Board> {
+  public createBoard(dto: CreateBoardDto, userId: string): Promise<Board> {
     const board = this.boardRepo.create({ ...dto, ownerId: userId });
 
     return this.boardRepo.save(board);
@@ -21,7 +21,7 @@ export class BoardRepository {
 
   public async updateBoard(
     dto: UpdateBoardDto,
-    boardId: number,
+    boardId: string,
   ): Promise<void> {
     await this.boardRepo.update({ id: boardId }, dto);
   }
@@ -30,7 +30,7 @@ export class BoardRepository {
     return this.boardRepo.findBy(options);
   }
 
-  public async deleteBoard(id: number): Promise<void> {
+  public async deleteBoard(id: string): Promise<void> {
     await this.boardRepo.softDelete({ id });
   }
 }

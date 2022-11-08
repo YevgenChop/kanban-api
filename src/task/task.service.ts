@@ -18,7 +18,7 @@ export class TaskService {
     return this.taskRepo.createTask(dto);
   }
 
-  public async updateTask(dto: UpdateTaskDto, id: number): Promise<void> {
+  public async updateTask(dto: UpdateTaskDto, id: string): Promise<void> {
     try {
       await this.taskRepo.findOneByOrFail({ id });
     } catch (error) {
@@ -28,7 +28,7 @@ export class TaskService {
     return this.taskRepo.updateTask(dto, id);
   }
 
-  public async deleteTask(id: number): Promise<void> {
+  public async deleteTask(id: string): Promise<void> {
     try {
       await this.taskRepo.findOneByOrFail({ id });
     } catch (error) {
@@ -37,7 +37,7 @@ export class TaskService {
     await this.taskRepo.deleteTask(id);
   }
 
-  public async getTasks(boardId: number): Promise<Task[]> {
+  public async getTasks(boardId: string): Promise<Task[]> {
     try {
       await this.boardRepo.findOneByOrFail({ id: boardId });
     } catch (error) {

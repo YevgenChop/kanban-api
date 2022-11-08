@@ -16,6 +16,6 @@ export class CreateTaskDto {
 
   @IsNotEmpty()
   @IsPositive()
-  @ApiProperty({ type: 'number', example: 1 })
-  public boardId: number;
+  @ApiProperty({ type: 'string', example: 1 })
+  public boardId: string;
 }

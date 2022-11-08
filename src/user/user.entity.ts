@@ -1,7 +1,6 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   DeleteDateColumn,
   ManyToMany,
   JoinTable,
@@ -10,6 +9,7 @@ import { Exclude } from 'class-transformer';
 import { Board } from '../board/board.entity';
 import { Task } from '../task/task.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { BaseEntity } from '../shared/base.entity';
 
 export enum UserRole {
   Admin = 'admin',
@@ -17,11 +17,7 @@ export enum UserRole {
 }
 
 @Entity()
-export class User {
-  @ApiProperty()
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class User extends BaseEntity {
   @ApiProperty()
   @Column({ unique: true })
   login: string;

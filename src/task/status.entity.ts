@@ -1,11 +1,9 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity } from '../shared/base.entity';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { Task } from './task.entity';
 
 @Entity()
-export class Status {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Status extends BaseEntity {
   @Column()
   title: string;
 

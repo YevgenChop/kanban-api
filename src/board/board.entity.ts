@@ -1,19 +1,16 @@
-import { Task } from 'src/task/task.entity';
-import { User } from 'src/user/user.entity';
+import { BaseEntity } from '../shared/base.entity';
+import { Task } from '../task/task.entity';
+import { User } from '../user/user.entity';
 import {
   Column,
   DeleteDateColumn,
   Entity,
   ManyToMany,
   OneToMany,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity()
-export class Board {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Board extends BaseEntity {
   @Column()
   title: string;
 
@@ -27,7 +24,7 @@ export class Board {
   tasks: Task[];
 
   @Column()
-  ownerId: number;
+  ownerId: string;
 
   @DeleteDateColumn({ select: false })
   deletedAt?: Date;

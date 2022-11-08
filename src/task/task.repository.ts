@@ -17,11 +17,11 @@ export class TaskRepository {
     return this.taskRepo.findOneByOrFail(options);
   }
 
-  public async updateTask(dto: UpdateTaskDto, id: number): Promise<void> {
+  public async updateTask(dto: UpdateTaskDto, id: string): Promise<void> {
     await this.taskRepo.update({ id }, dto);
   }
 
-  public async deleteTask(id: number): Promise<void> {
+  public async deleteTask(id: string): Promise<void> {
     await this.taskRepo.softDelete({ id });
   }
 

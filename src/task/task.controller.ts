@@ -40,7 +40,7 @@ export class TaskController {
   @Patch(':id')
   public updateTask(
     @Body() dto: UpdateTaskDto,
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
   ): Promise<void> {
     return this.taskService.updateTask(dto, id);
   }
@@ -49,14 +49,14 @@ export class TaskController {
   @Roles('admin')
   @UseGuards(RolesGuard)
   @Delete(':id')
-  public deleteTask(@Param('id', ParseIntPipe) id: number): Promise<void> {
+  public deleteTask(@Param('id') id: string): Promise<void> {
     return this.taskService.deleteTask(id);
   }
 
   @GetTasksDocs()
   @Get()
   public getTasksByBoardId(
-    @Query('boardId', ParseIntPipe) boardId: number,
+    @Query('boardId') boardId: string,
   ): Promise<TaskDto[]> {
     return this.taskService.getTasks(boardId);
   }
