@@ -65,8 +65,8 @@ export class UserService {
     return this.userRepo.find();
   }
 
-  public verifyUser(id: string): Promise<void> {
-    return this.userRepo.verifyUser(id);
+  public updateVerifiedUser(id: string): Promise<void> {
+    return this.userRepo.updateVerifiedUser(id);
   }
 
   public async deleteUser(id: string): Promise<void> {

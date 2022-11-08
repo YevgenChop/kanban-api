@@ -45,6 +45,6 @@ export class AuthService {
       throw new UserNotFoundException();
     }
 
-    await this.userService.verifyUser(user.id);
+    await this.userService.updateVerifiedUser(user.id);
   }
 }

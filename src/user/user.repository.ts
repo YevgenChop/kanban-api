@@ -26,7 +26,7 @@ export class UserRepository {
     await this.userRepo.softDelete({ id });
   }
 
-  public async verifyUser(id: string): Promise<void> {
+  public async updateVerifiedUser(id: string): Promise<void> {
     await this.userRepo.update(
       { id },
       { verified: true, verificationToken: null },
