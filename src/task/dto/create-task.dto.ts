@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsPositive, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID, MaxLength } from 'class-validator';
 
 export class CreateTaskDto {
   @ApiProperty({ type: 'string', example: 'Create Module' })
@@ -15,7 +15,10 @@ export class CreateTaskDto {
   public description: string;
 
   @IsNotEmpty()
-  @IsPositive()
-  @ApiProperty({ type: 'string', example: 1 })
+  @IsUUID()
+  @ApiProperty({
+    type: 'string',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
   public boardId: string;
 }

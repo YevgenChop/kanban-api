@@ -19,21 +19,14 @@ export class TaskService {
   }
 
   public async updateTask(dto: UpdateTaskDto, id: string): Promise<void> {
-    try {
-      await this.taskRepo.findOneByOrFail({ id });
-    } catch (error) {
-      throw new TaskNotFoundException();
-    }
+    await this.findOneByOrFail({ id });
 
     return this.taskRepo.updateTask(dto, id);
   }
 
   public async deleteTask(id: string): Promise<void> {
-    try {
-      await this.taskRepo.findOneByOrFail({ id });
-    } catch (error) {
-      throw new TaskNotFoundException();
-    }
+    await this.findOneByOrFail({ id });
+
     await this.taskRepo.deleteTask(id);
   }
 
@@ -45,5 +38,13 @@ export class TaskService {
     }
 
     return this.taskRepo.findBy({ boardId });
+  }
+
+  public async findOneByOrFail(options: Partial<Task>): Promise<Task> {
+    try {
+      return await this.taskRepo.findOneByOrFail(options);
+    } catch (error) {
+      throw new TaskNotFoundException();
+    }
   }
 }

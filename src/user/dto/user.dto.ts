@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsPositive } from 'class-validator';
+import { IsString, IsNotEmpty, IsUUID } from 'class-validator';
+import { TaskDto } from 'src/task/dto/task.dto';
 import { UserRole } from '../user.entity';
 
 export class UserDto {
@@ -41,9 +42,17 @@ export class UserDto {
 
   /**
    * A user's id
-   * @example 1
+   * @example 123e4567-e89b-12d3-a456-426614174000
    */
-  @IsPositive()
-  @ApiProperty({ type: 'string', example: '1' })
+  @IsUUID()
+  @ApiProperty({
+    type: 'string',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
   id: string;
+}
+
+export class UserWithTasksDto extends UserDto {
+  @ApiProperty({ type: TaskDto, isArray: true })
+  tasks: TaskDto[];
 }

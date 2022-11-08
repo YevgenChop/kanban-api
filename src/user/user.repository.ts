@@ -45,6 +45,15 @@ export class UserRepository {
     return this.userRepo.findOneOrFail({ where: options });
   }
 
+  public find(): Promise<User[]> {
+    // TO DISCUSS: Should there be pagination and/or any sort of filters?
+    return this.userRepo
+      .createQueryBuilder('u')
+      .leftJoinAndSelect('u.tasks', 't')
+      .select(['u.id', 'u.login', 'u.name', 'u.email', 'u.role', 't'])
+      .getMany();
+  }
+
   public findOneWithPassword(login: string): Promise<User> {
     return this.userRepo
       .createQueryBuilder('u')

@@ -18,13 +18,7 @@ export class BoardService {
     user: User,
     boardId: string,
   ): Promise<void> {
-    let board: Board;
-
-    try {
-      board = await this.boardRepo.findOneByOrFail({ id: boardId });
-    } catch (error) {
-      throw new BoardNotFoundException();
-    }
+    const board = await this.findOneByOrFail({ id: boardId });
 
     if (board.ownerId !== user.id && user.role !== UserRole.Admin) {
       throw new ForbiddenException('Not enough rights');
@@ -38,18 +32,20 @@ export class BoardService {
   }
 
   public async deleteBoard(boardId: string, user: User): Promise<void> {
-    let board: Board;
-
-    try {
-      board = await this.boardRepo.findOneByOrFail({ id: boardId });
-    } catch (error) {
-      throw new BoardNotFoundException();
-    }
+    const board = await this.findOneByOrFail({ id: boardId });
 
     if (board.ownerId !== user.id && user.role !== UserRole.Admin) {
       throw new ForbiddenException('Not enough rights');
     }
 
     await this.boardRepo.deleteBoard(boardId);
+  }
+
+  public async findOneByOrFail(options: Partial<Board>): Promise<Board> {
+    try {
+      return await this.boardRepo.findOneByOrFail(options);
+    } catch (error) {
+      throw new BoardNotFoundException();
+    }
   }
 }

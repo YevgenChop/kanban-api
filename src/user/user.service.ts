@@ -55,16 +55,22 @@ export class UserService {
     return this.userRepo.updateUser(id, dto);
   }
 
+  public async getUserById(id: string): Promise<Omit<User, 'verified'>> {
+    const { verified, ...user } = await this.findOneByOrFail({ id });
+
+    return user;
+  }
+
+  public async getUsers(): Promise<Omit<User, 'verified'>[]> {
+    return this.userRepo.find();
+  }
+
   public verifyUser(id: string): Promise<void> {
     return this.userRepo.verifyUser(id);
   }
 
   public async deleteUser(id: string): Promise<void> {
-    try {
-      await this.userRepo.findOneOrFail({ id });
-    } catch (error) {
-      throw new UserNotFoundException();
-    }
+    await this.findOneByOrFail({ id });
 
     return this.userRepo.softDeleteUser(id);
   }
@@ -77,7 +83,11 @@ export class UserService {
     return this.userRepo.findOneWithPassword(login);
   }
 
-  public findOneByOrFail(options: Partial<User>): Promise<User> {
-    return this.userRepo.findOneOrFail(options);
+  public async findOneByOrFail(options: Partial<User>): Promise<User> {
+    try {
+      return await this.userRepo.findOneOrFail(options);
+    } catch (error) {
+      throw new UserNotFoundException();
+    }
   }
 }

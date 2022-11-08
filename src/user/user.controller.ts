@@ -3,10 +3,11 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Post,
   Put,
   UseGuards,
@@ -21,7 +22,10 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDocs } from './swagger/create-user.swagger-docs';
 import { DeleteUserDocs } from './swagger/delete-user.swagger-docs';
+import { GetUserDocs } from './swagger/get-user.swagger-docs';
+import { GetUsersDocs } from './swagger/get-users.swagger-docs';
 import { UpdateUserDocs } from './swagger/update-user.swagger-docs';
+import { User as UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
 @ApiTags('user')
@@ -52,7 +56,21 @@ export class UserController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Roles('admin')
   @Delete('/:id')
-  public deleteUpdate(@Param('id') id: string): Promise<void> {
+  public deleteUser(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     return this.userService.deleteUser(id);
+  }
+
+  @GetUserDocs()
+  @Get('/:id')
+  public getUser(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<Omit<UserEntity, 'verified'>> {
+    return this.userService.getUserById(id);
+  }
+
+  @GetUsersDocs()
+  @Get()
+  public getUsers(): Promise<Omit<UserEntity, 'verified'>[]> {
+    return this.userService.getUsers();
   }
 }

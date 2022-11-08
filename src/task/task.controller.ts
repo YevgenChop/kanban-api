@@ -6,7 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -40,7 +40,7 @@ export class TaskController {
   @Patch(':id')
   public updateTask(
     @Body() dto: UpdateTaskDto,
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
   ): Promise<void> {
     return this.taskService.updateTask(dto, id);
   }
@@ -49,7 +49,7 @@ export class TaskController {
   @Roles('admin')
   @UseGuards(RolesGuard)
   @Delete(':id')
-  public deleteTask(@Param('id') id: string): Promise<void> {
+  public deleteTask(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     return this.taskService.deleteTask(id);
   }
 

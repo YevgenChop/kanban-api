@@ -2,7 +2,7 @@ import { applyDecorators } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiForbiddenResponse,
+  ApiUnauthorizedResponse,
   ApiNoContentResponse,
   ApiOperation,
 } from '@nestjs/swagger';
@@ -13,6 +13,8 @@ export const UpdateUserDocs = () => {
     ApiBearerAuth(),
     ApiNoContentResponse({ description: 'The user has been updated' }),
     ApiBadRequestResponse({ description: 'Request body is invalid' }),
-    ApiForbiddenResponse({ description: 'Forbidden: missing or invalid JWT' }),
+    ApiUnauthorizedResponse({
+      description: 'Forbidden: missing or invalid JWT',
+    }),
   );
 };

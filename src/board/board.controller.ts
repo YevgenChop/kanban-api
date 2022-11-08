@@ -6,7 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -43,7 +43,7 @@ export class BoardController {
   public updateBoard(
     @Body() dto: UpdateBoardDto,
     @User() user: UserEntity,
-    @Param('id') boardId: string,
+    @Param('id', ParseUUIDPipe) boardId: string,
   ): Promise<void> {
     return this.boardService.updateBoard(dto, user, boardId);
   }
@@ -60,7 +60,7 @@ export class BoardController {
   @DeleteBoardDocs()
   @Delete(':id')
   public deleteBoard(
-    @Param('id') boardId: string,
+    @Param('id', ParseUUIDPipe) boardId: string,
     @User() user: UserEntity,
   ): Promise<void> {
     return this.boardService.deleteBoard(boardId, user);
