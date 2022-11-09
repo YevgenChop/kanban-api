@@ -9,5 +9,6 @@ import { StatusService } from './status.service';
   imports: [TypeOrmModule.forFeature([Status])],
   controllers: [StatusController],
   providers: [StatusService, StatusRepository],
+  exports: [StatusService, StatusRepository],
 })
 export class StatusModule {}
