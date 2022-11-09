@@ -16,4 +16,20 @@ export class StatusRepository {
   public findOneByIdOrFail(id: string): Promise<Status> {
     return this.statusRepo.findOneByOrFail({ id });
   }
+
+  public findOneByTitle(title: string): Promise<Status> {
+    return this.statusRepo.findOneBy({ title });
+  }
+
+  public async createStatus(title: string): Promise<void> {
+    await this.statusRepo.save(this.statusRepo.create({ title }));
+  }
+
+  public async updateStatus(id: string, title: string): Promise<void> {
+    await this.statusRepo.update({ id }, { title });
+  }
+
+  public async deleteStatus(id: string): Promise<void> {
+    await this.statusRepo.delete({ id });
+  }
 }

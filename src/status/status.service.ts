@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { StatusAlreadyExistsException } from './errors/status-already-exists.exception';
+import { StatusNotFoundException } from './errors/status-not-found.exception';
 import { Status } from './status.entity';
 import { StatusRepository } from './status.repository';
 
@@ -10,7 +12,34 @@ export class StatusService {
     return this.statusRepo.find();
   }
 
-  public findOneByIdOrFail(id: string): Promise<Status> {
-    return this.statusRepo.findOneByIdOrFail(id);
+  public async createStatus(title: string): Promise<void> {
+    const status = await this.statusRepo.findOneByTitle(title);
+
+    if (status) throw new StatusAlreadyExistsException();
+
+    return this.statusRepo.createStatus(title);
+  }
+
+  public async deleteStatus(id: string): Promise<void> {
+    await this.findOneByIdOrFail(id);
+
+    return this.statusRepo.deleteStatus(id);
+  }
+
+  public async updateStatus(id: string, title: string): Promise<void> {
+    await this.findOneByIdOrFail(id);
+
+    const status = await this.statusRepo.findOneByTitle(title);
+    if (status) throw new StatusAlreadyExistsException();
+
+    return this.statusRepo.updateStatus(id, title);
+  }
+
+  public async findOneByIdOrFail(id: string): Promise<Status> {
+    try {
+      return await this.statusRepo.findOneByIdOrFail(id);
+    } catch (error) {
+      throw new StatusNotFoundException();
+    }
   }
 }
