@@ -7,7 +7,7 @@ import {
   ManyToMany,
   ManyToOne,
 } from 'typeorm';
-import { Status } from './status.entity';
+import { Status } from '../status/status.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { BaseEntity } from '../shared/base.entity';
 
@@ -24,7 +24,6 @@ export class Task extends BaseEntity {
   @ManyToOne(() => Board, (board) => board.tasks)
   board: Board;
 
-  @ApiProperty()
   @ManyToOne(() => Status, (status) => status.tasks)
   status: Status;
 
@@ -35,6 +34,10 @@ export class Task extends BaseEntity {
   @ApiProperty()
   @Column()
   boardId: string;
+
+  @ApiProperty()
+  @Column()
+  statusId: string;
 
   @DeleteDateColumn({ select: false })
   deletedAt?: Date;

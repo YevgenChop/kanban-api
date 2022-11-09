@@ -35,7 +35,7 @@ export class BoardRepository {
     let query = this.boardRepo
       .createQueryBuilder('b')
       .leftJoin('b.tasks', 'bt')
-      .addSelect(['bt.id', 'bt.description', 'bt.title', 'bt.status']);
+      .addSelect(['bt.id', 'bt.description', 'bt.title', 'bt.statusId']);
     query = this.addOptionalParamsToQuery(query, dto);
 
     return query.getMany();

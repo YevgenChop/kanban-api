@@ -21,4 +21,12 @@ export class CreateTaskDto {
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
   public boardId: string;
+
+  @IsNotEmpty()
+  @IsUUID()
+  @ApiProperty({
+    type: 'string',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  public statusId: string;
 }

@@ -3,6 +3,7 @@ import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiNoContentResponse,
+  ApiNotFoundResponse,
   ApiOperation,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -16,5 +17,6 @@ export const UpdateTaskDocs = () => {
       description: 'Forbidden: missing or invalid JWT',
     }),
     ApiBadRequestResponse({ description: 'Invalid request body' }),
+    ApiNotFoundResponse({ description: 'Status not found' }),
   );
 };

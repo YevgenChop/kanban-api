@@ -2,6 +2,7 @@ import { applyDecorators } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiUnauthorizedResponse,
@@ -17,5 +18,6 @@ export const CreateTaskDocs = () => {
       description: 'Forbidden: missing or invalid JWT',
     }),
     ApiBadRequestResponse({ description: 'Invalid request body' }),
+    ApiNotFoundResponse({ description: 'Board or status not found' }),
   );
 };

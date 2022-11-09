@@ -3,6 +3,7 @@ import {
   ApiBearerAuth,
   ApiForbiddenResponse,
   ApiNoContentResponse,
+  ApiNotFoundResponse,
   ApiOperation,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -16,5 +17,6 @@ export const DeleteTaskDocs = () => {
       description: 'Forbidden: missing or invalid JWT',
     }),
     ApiForbiddenResponse({ description: 'Forbidden: not enough rights' }),
+    ApiNotFoundResponse({ description: 'Task not found' }),
   );
 };
