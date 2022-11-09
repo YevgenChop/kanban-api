@@ -9,7 +9,7 @@ export class EmailService {
     await this.client.send({
       to,
       subject: 'Verify token',
-      text: `Please follow this link to verify your email: http://localhost:3000/auth/verify?token=${token}`,
+      html: `<a target=_blank href="http://localhost:3000/auth/verify?token=${token}">Please follow this link to verify your email</a>`,
     });
   }
 }

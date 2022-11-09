@@ -37,7 +37,7 @@ import { SendGridModule } from '@ntegral/nestjs-sendgrid';
         apiKey: configService.get('SENDGRID_API_KEY'),
         defaultMailData: {
           from: configService.get('SENDGRID_FROM'),
-          text: '',
+          text: ' ',
         },
       }),
       inject: [ConfigService],
