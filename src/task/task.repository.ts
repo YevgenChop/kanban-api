@@ -25,7 +25,13 @@ export class TaskRepository {
     await this.taskRepo.softDelete({ id });
   }
 
-  public findBy(options: Partial<Task>): Promise<Task[]> {
-    return this.taskRepo.findBy(options);
+  public findByBoardId(boardId: string): Promise<Task[]> {
+    return this.taskRepo
+      .createQueryBuilder('t')
+      .leftJoin('t.comments', 'tc')
+      .leftJoinAndSelect('t.users', 'tu')
+      .addSelect(['tc.id', 'tc.userId', 'tc.commentText'])
+      .where('t.boardId = :boardId', { boardId })
+      .getMany();
   }
 }

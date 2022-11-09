@@ -40,7 +40,7 @@ export class TaskService {
   public async getTasks(boardId: string): Promise<Task[]> {
     await this.checkIfBoardExistsOrFail(boardId);
 
-    return this.taskRepo.findBy({ boardId });
+    return this.taskRepo.findByBoardId(boardId);
   }
 
   public async findOneByOrFail(options: Partial<Task>): Promise<Task> {
