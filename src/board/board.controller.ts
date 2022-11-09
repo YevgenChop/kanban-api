@@ -22,6 +22,7 @@ import { CreateBoardDocs } from './swagger/create-board.swagger-docs';
 import { UpdateBoardDocs } from './swagger/update-board.swagger-docs';
 import { GetBoardsDocs } from './swagger/get-boards.swagger-docs';
 import { DeleteBoardDocs } from './swagger/delete-board.swagger-docs';
+import { BoardQueryDto } from './dto/board-query.dto';
 
 @ApiTags('board')
 @Controller('board')
@@ -50,10 +51,8 @@ export class BoardController {
 
   @GetBoardsDocs()
   @Get()
-  public getBoardsByOwnerId(
-    @Query('ownerId') ownerId: string,
-  ): Promise<BoardDto[]> {
-    return this.boardService.getBoards(ownerId);
+  public getBoards(@Query() dto: BoardQueryDto): Promise<BoardDto[]> {
+    return this.boardService.getBoards(dto);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)

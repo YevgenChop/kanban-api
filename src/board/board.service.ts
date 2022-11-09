@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { User, UserRole } from '../user/user.entity';
 import { Board } from './board.entity';
 import { BoardRepository } from './board.repository';
+import { BoardQueryDto } from './dto/board-query.dto';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { BoardNotFoundException } from './errors/board-not-found.exception';
@@ -27,8 +28,8 @@ export class BoardService {
     await this.boardRepo.updateBoard(dto, boardId);
   }
 
-  public getBoards(ownerId: string): Promise<Board[]> {
-    return this.boardRepo.findBy({ ownerId });
+  public getBoards(dto: BoardQueryDto): Promise<Board[]> {
+    return this.boardRepo.find(dto);
   }
 
   public async deleteBoard(boardId: string, user: User): Promise<void> {

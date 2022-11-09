@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { TaskDto } from 'src/task/dto/task.dto';
 import { Task } from '../../task/task.entity';
 import { CreateBoardDto } from './create-board.dto';
 
@@ -16,17 +17,8 @@ export class BoardDto extends CreateBoardDto {
   public ownerId: string;
 
   @ApiProperty({
-    type: [Task],
-    example: {
-      id: '123e4567-e89b-12d3-a456-426614174000',
-      title: 'Create Module',
-      desription: 'Create the auth module',
-      boardId: '123e4567-e89b-12d3-a456-426614174000',
-      users: [
-        { id: '123e4567-e89b-12d3-a456-426614174000' },
-        { id: '123e4567-e89b-12d3-a456-426614174001' },
-      ],
-    },
+    type: TaskDto,
+    isArray: true,
   })
   public tasks: Task[];
 }

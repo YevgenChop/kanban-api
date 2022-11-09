@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { Board } from './board.entity';
+import { BoardQueryDto } from './dto/board-query.dto';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 
@@ -30,7 +31,32 @@ export class BoardRepository {
     return this.boardRepo.findBy(options);
   }
 
+  public find(dto: BoardQueryDto): Promise<Board[]> {
+    let query = this.boardRepo
+      .createQueryBuilder('b')
+      .leftJoin('b.tasks', 'bt')
+      .addSelect(['bt.id', 'bt.description', 'bt.title', 'bt.status']);
+    query = this.addOptionalParamsToQuery(query, dto);
+
+    return query.getMany();
+  }
+
   public async deleteBoard(id: string): Promise<void> {
     await this.boardRepo.softDelete({ id });
+  }
+
+  private addOptionalParamsToQuery(
+    qb: SelectQueryBuilder<Board>,
+    dto: BoardQueryDto,
+  ): SelectQueryBuilder<Board> {
+    if (dto.ownerId) {
+      qb.andWhere('b.ownerId = :ownerId', { ownerId: dto.ownerId });
+    }
+
+    if (dto.limit && dto.offset) {
+      qb.skip(dto.offset).take(dto.limit);
+    }
+
+    return qb;
   }
 }
