@@ -1,6 +1,6 @@
 import { BaseEntity } from '../shared/base.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
-import { Task } from './task.entity';
+import { Task } from '../task/task.entity';
 
 @Entity()
 export class Status extends BaseEntity {
