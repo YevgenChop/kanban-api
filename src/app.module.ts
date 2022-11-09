@@ -10,6 +10,7 @@ import { TaskModule } from './task/task.module';
 import configuration from './config/configuration';
 import { SendGridModule } from '@ntegral/nestjs-sendgrid';
 import { StatusModule } from './status/status.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { StatusModule } from './status/status.module';
     BoardModule,
     TaskModule,
     StatusModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
