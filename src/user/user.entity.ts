@@ -4,12 +4,14 @@ import {
   DeleteDateColumn,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Board } from '../board/board.entity';
 import { Task } from '../task/task.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { BaseEntity } from '../shared/base.entity';
+import { Comment } from '../comment/comment.entity';
 
 export enum UserRole {
   Admin = 'admin',
@@ -55,6 +57,9 @@ export class User extends BaseEntity {
   @ManyToMany(() => Task, (task) => task.users)
   @JoinTable()
   tasks: Task[];
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
 
   @DeleteDateColumn({ select: false })
   deletedAt?: Date;
