@@ -13,6 +13,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { User } from '../decorators/user.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -23,6 +24,9 @@ import { DeleteTaskDocs } from './swagger/delete-task.swagger-docs';
 import { GetTasksDocs } from './swagger/get-tasks.swagger-docs';
 import { UpdateTaskDocs } from './swagger/update-task.swagger-docs';
 import { TaskService } from './task.service';
+import { User as UserEntity } from '../user/user.entity';
+import { AssignTaskDocs } from './swagger/assign-task.swagger-docs';
+import { UnassignTaskDocs } from './swagger/unassign-task.swagger-docs';
 
 @ApiTags('task')
 @Controller('task')
@@ -46,6 +50,7 @@ export class TaskController {
   }
 
   @DeleteTaskDocs()
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Roles('admin')
   @UseGuards(RolesGuard)
   @Delete(':id')
@@ -59,5 +64,27 @@ export class TaskController {
     @Query('boardId') boardId: string,
   ): Promise<TaskDto[]> {
     return this.taskService.getTasks(boardId);
+  }
+
+  @AssignTaskDocs()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Post('/assign/:id')
+  public assign(
+    @Param('id', ParseUUIDPipe) taskId: string,
+    @Body('userId', ParseUUIDPipe) userId: string,
+    @User() user: UserEntity,
+  ): Promise<void> {
+    return this.taskService.assign(taskId, userId, user);
+  }
+
+  @UnassignTaskDocs()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete('/assign/:id')
+  public unassign(
+    @Param('id', ParseUUIDPipe) taskId: string,
+    @Body('userId', ParseUUIDPipe) userId: string,
+    @User() user: UserEntity,
+  ): Promise<void> {
+    return this.taskService.unassign(taskId, userId, user);
   }
 }
