@@ -8,8 +8,8 @@ import {
   HttpStatus,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
-  Put,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -44,7 +44,7 @@ export class UserController {
   }
 
   @UpdateUserDocs()
-  @Put()
+  @Patch()
   public updateUser(
     @User('id') id: string,
     @Body() dto: UpdateUserDto,
