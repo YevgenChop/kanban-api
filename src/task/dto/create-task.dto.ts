@@ -6,13 +6,13 @@ export class CreateTaskDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(100)
-  public title: string;
+  title: string;
 
   @IsNotEmpty()
   @IsString()
   @MaxLength(200)
   @ApiProperty({ type: 'string', example: 'Create auth module' })
-  public description: string;
+  description: string;
 
   @IsNotEmpty()
   @IsUUID()
@@ -20,7 +20,7 @@ export class CreateTaskDto {
     type: 'string',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  public boardId: string;
+  boardId: string;
 
   @IsNotEmpty()
   @IsUUID()
@@ -28,5 +28,5 @@ export class CreateTaskDto {
     type: 'string',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  public statusId: string;
+  statusId: string;
 }

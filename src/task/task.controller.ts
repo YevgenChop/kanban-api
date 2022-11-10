@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -11,13 +12,14 @@ import {
   Post,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from '../decorators/user.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { TaskDto } from './dto/task.dto';
+import { TaskDto, TaskWithUsersAndCommentsDto } from './dto/task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { CreateTaskDocs } from './swagger/create-task.swagger-docs';
 import { DeleteTaskDocs } from './swagger/delete-task.swagger-docs';
@@ -29,6 +31,7 @@ import { AssignTaskDocs } from './swagger/assign-task.swagger-docs';
 import { UnassignTaskDocs } from './swagger/unassign-task.swagger-docs';
 
 @ApiTags('task')
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('task')
 export class TaskController {
   constructor(private taskService: TaskService) {}
@@ -62,7 +65,7 @@ export class TaskController {
   @Get()
   public getTasksByBoardId(
     @Query('boardId') boardId: string,
-  ): Promise<TaskDto[]> {
+  ): Promise<TaskWithUsersAndCommentsDto[]> {
     return this.taskService.getTasks(boardId);
   }
 

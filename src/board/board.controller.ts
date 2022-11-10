@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -10,12 +11,13 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { User as UserEntity } from '../user/user.entity';
 import { User } from '../decorators/user.decorator';
 import { BoardService } from './board.service';
-import { BoardDto } from './dto/board.dto';
+import { BoardDto, BoardWithTasksDto } from './dto/board.dto';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { CreateBoardDocs } from './swagger/create-board.swagger-docs';
@@ -25,6 +27,7 @@ import { DeleteBoardDocs } from './swagger/delete-board.swagger-docs';
 import { BoardQueryDto } from './dto/board-query.dto';
 
 @ApiTags('board')
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('board')
 export class BoardController {
   constructor(private boardService: BoardService) {}
@@ -51,7 +54,7 @@ export class BoardController {
 
   @GetBoardsDocs()
   @Get()
-  public getBoards(@Query() dto: BoardQueryDto): Promise<BoardDto[]> {
+  public getBoards(@Query() dto: BoardQueryDto): Promise<BoardWithTasksDto[]> {
     return this.boardService.getBoards(dto);
   }
 

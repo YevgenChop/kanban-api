@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { TaskDto } from 'src/task/dto/task.dto';
-import { Task } from '../../task/task.entity';
+import { TaskWithUsersAndCommentsDto } from '../../task/dto/task.dto';
 import { CreateBoardDto } from './create-board.dto';
 
 export class BoardDto extends CreateBoardDto {
@@ -8,17 +7,19 @@ export class BoardDto extends CreateBoardDto {
     type: 'string',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  public id: string;
+  id: string;
 
   @ApiProperty({
     type: 'string',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  public ownerId: string;
+  ownerId: string;
+}
 
+export class BoardWithTasksDto extends BoardDto {
   @ApiProperty({
-    type: TaskDto,
+    type: TaskWithUsersAndCommentsDto,
     isArray: true,
   })
-  public tasks: Task[];
+  tasks: TaskWithUsersAndCommentsDto[];
 }

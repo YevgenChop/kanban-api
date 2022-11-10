@@ -8,6 +8,7 @@ import {
   ManyToMany,
   OneToMany,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Board extends BaseEntity {
@@ -26,6 +27,7 @@ export class Board extends BaseEntity {
   @Column()
   ownerId: string;
 
+  @Exclude()
   @DeleteDateColumn({ select: false })
   deletedAt?: Date;
 }

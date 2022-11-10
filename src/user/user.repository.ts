@@ -49,8 +49,15 @@ export class UserRepository {
     // TO DISCUSS: Should there be pagination and/or any sort of filters?
     return this.userRepo
       .createQueryBuilder('u')
-      .leftJoinAndSelect('u.tasks', 't')
-      .select(['u.id', 'u.login', 'u.name', 'u.email', 'u.role', 't'])
+      .leftJoin('u.tasks', 't')
+      .select(['u.id', 'u.login', 'u.name', 'u.email', 'u.role'])
+      .addSelect([
+        't.id',
+        't.description',
+        't.boardId',
+        't.title',
+        't.statusId',
+      ])
       .getMany();
   }
 

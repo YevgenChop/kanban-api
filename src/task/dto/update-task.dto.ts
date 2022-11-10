@@ -13,7 +13,7 @@ export class UpdateTaskDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(100)
-  public title?: string;
+  title?: string;
 
   @ApiProperty({
     type: 'string',
@@ -24,7 +24,7 @@ export class UpdateTaskDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(200)
-  public description?: string;
+  description?: string;
 
   @IsOptional()
   @IsNotEmpty()
@@ -33,5 +33,5 @@ export class UpdateTaskDto {
     type: 'string',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  public statusId?: string;
+  statusId?: string;
 }

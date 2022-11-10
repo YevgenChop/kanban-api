@@ -7,6 +7,7 @@ import { UserNotFoundException } from 'src/user/errors/user-not-found.exeption';
 import { User } from '../user/user.entity';
 import { UserNotVerifiedException } from './errors/user-not-verified.exception';
 import { InvalidJWTException } from './errors/invalid-jwt.exception';
+import { UserWithTokenDto } from 'src/user/dto/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  public async validateUser(login: string, pass: string): Promise<any> {
+  public async validateUser(
+    login: string,
+    pass: string,
+  ): Promise<UserWithTokenDto> {
     const user = await this.userService.findOneWithPassword(login);
     if (!user) throw new UserNotFoundException();
     if (!user.verified) throw new UserNotVerifiedException();

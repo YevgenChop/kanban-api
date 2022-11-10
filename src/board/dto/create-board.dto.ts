@@ -6,11 +6,11 @@ export class CreateBoardDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(100)
-  public title: string;
+  title: string;
 
   @IsNotEmpty()
   @IsString()
   @MaxLength(200)
   @ApiProperty({ type: 'string', example: 'This is a new board' })
-  public description: string;
+  description: string;
 }

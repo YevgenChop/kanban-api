@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserNotFoundException } from './errors/user-not-found.exeption';
 import { EmailService } from 'src/auth/email.service';
+import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -55,13 +56,13 @@ export class UserService {
     return this.userRepo.updateUser(id, dto);
   }
 
-  public async getUserById(id: string): Promise<Omit<User, 'verified'>> {
+  public async getUserById(id: string): Promise<UserDto> {
     const { verified, ...user } = await this.findOneByOrFail({ id });
 
     return user;
   }
 
-  public async getUsers(): Promise<Omit<User, 'verified'>[]> {
+  public async getUsers(): Promise<UserDto[]> {
     return this.userRepo.find();
   }
 

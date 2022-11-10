@@ -6,7 +6,7 @@ import {
   ApiOperation,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { BoardDto } from '../dto/board.dto';
+import { BoardWithTasksDto } from '../dto/board.dto';
 
 export const GetBoardsDocs = () => {
   return applyDecorators(
@@ -14,7 +14,7 @@ export const GetBoardsDocs = () => {
     ApiBearerAuth(),
     ApiOkResponse({
       description: 'An array of board objects',
-      type: BoardDto,
+      type: BoardWithTasksDto,
       isArray: true,
     }),
     ApiUnauthorizedResponse({

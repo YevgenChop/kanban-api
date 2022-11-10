@@ -11,7 +11,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Public } from '../decorators/public.decorator';
 import { User } from '../decorators/user.decorator';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
-import { UserDto } from '../user/dto/user.dto';
+import { UserWithTokenDto } from '../user/dto/user.dto';
 import { AuthService } from './auth.service';
 import { TokenDto } from './dto/token.dto';
 import { LoginDocs } from './swagger/login.swagger-docs';
@@ -26,7 +26,7 @@ export class AuthController {
   @LoginDocs()
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  public login(@User() user: UserDto): UserDto {
+  public login(@User() user: UserWithTokenDto): UserWithTokenDto {
     return user;
   }
 

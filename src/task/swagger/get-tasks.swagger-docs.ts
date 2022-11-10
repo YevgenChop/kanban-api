@@ -6,7 +6,7 @@ import {
   ApiOperation,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { TaskDto } from '../dto/task.dto';
+import { TaskWithUsersAndCommentsDto } from '../dto/task.dto';
 
 export const GetTasksDocs = () => {
   return applyDecorators(
@@ -15,7 +15,7 @@ export const GetTasksDocs = () => {
     ApiNotFoundResponse({ description: 'Board not found' }),
     ApiOkResponse({
       description: `Board's tasks`,
-      type: TaskDto,
+      type: TaskWithUsersAndCommentsDto,
       isArray: true,
     }),
     ApiUnauthorizedResponse({

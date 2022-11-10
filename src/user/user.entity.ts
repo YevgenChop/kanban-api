@@ -9,7 +9,6 @@ import {
 import { Exclude } from 'class-transformer';
 import { Board } from '../board/board.entity';
 import { Task } from '../task/task.entity';
-import { ApiProperty } from '@nestjs/swagger';
 import { BaseEntity } from '../shared/base.entity';
 import { Comment } from '../comment/comment.entity';
 
@@ -20,15 +19,12 @@ export enum UserRole {
 
 @Entity()
 export class User extends BaseEntity {
-  @ApiProperty()
   @Column({ unique: true })
   login: string;
 
-  @ApiProperty()
   @Column({ unique: true })
   name: string;
 
-  @ApiProperty()
   @Column({ unique: true })
   email: string;
 
@@ -36,7 +32,6 @@ export class User extends BaseEntity {
   @Column({ select: false })
   password: string;
 
-  @ApiProperty()
   @Column({
     type: 'enum',
     enum: UserRole,

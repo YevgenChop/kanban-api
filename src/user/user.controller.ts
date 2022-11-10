@@ -20,12 +20,12 @@ import { Public } from '../decorators/public.decorator';
 import { User } from '../decorators/user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserDto } from './dto/user.dto';
 import { CreateUserDocs } from './swagger/create-user.swagger-docs';
 import { DeleteUserDocs } from './swagger/delete-user.swagger-docs';
 import { GetUserDocs } from './swagger/get-user.swagger-docs';
 import { GetUsersDocs } from './swagger/get-users.swagger-docs';
 import { UpdateUserDocs } from './swagger/update-user.swagger-docs';
-import { User as UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
 @ApiTags('user')
@@ -62,15 +62,13 @@ export class UserController {
 
   @GetUserDocs()
   @Get('/:id')
-  public getUser(
-    @Param('id', ParseUUIDPipe) id: string,
-  ): Promise<Omit<UserEntity, 'verified'>> {
+  public getUser(@Param('id', ParseUUIDPipe) id: string): Promise<UserDto> {
     return this.userService.getUserById(id);
   }
 
   @GetUsersDocs()
   @Get()
-  public getUsers(): Promise<Omit<UserEntity, 'verified'>[]> {
+  public getUsers(): Promise<UserDto[]> {
     return this.userService.getUsers();
   }
 }
