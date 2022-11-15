@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsOptional, IsPositive, IsUUID } from 'class-validator';
+import { IsOptional, IsPositive, IsUUID, Min } from 'class-validator';
 
 export class BoardQueryDto {
   @ApiProperty({
@@ -20,6 +20,6 @@ export class BoardQueryDto {
   @ApiProperty({ type: 'number', example: 5 })
   @IsOptional()
   @Transform(({ value }: { value: string }) => parseInt(value))
-  @IsPositive()
+  @Min(0)
   offset?: number;
 }

@@ -91,4 +91,8 @@ export class UserService {
       throw new UserNotFoundException();
     }
   }
+
+  public findOneByEmailWithToken(email: string): Promise<User> {
+    return this.userRepo.findOneByEmailWithToken(email);
+  }
 }

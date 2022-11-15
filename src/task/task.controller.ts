@@ -82,7 +82,7 @@ export class TaskController {
 
   @UnassignTaskDocs()
   @HttpCode(HttpStatus.NO_CONTENT)
-  @Delete('/assign/:id')
+  @Post('/unassign/:id')
   public unassign(
     @Param('id', ParseUUIDPipe) taskId: string,
     @Body('userId', ParseUUIDPipe) userId: string,

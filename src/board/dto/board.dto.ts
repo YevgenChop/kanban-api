@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { TaskWithUsersAndCommentsDto } from '../../task/dto/task.dto';
+import { TaskDto } from '../../task/dto/task.dto';
 import { CreateBoardDto } from './create-board.dto';
 
 export class BoardDto extends CreateBoardDto {
@@ -18,8 +18,8 @@ export class BoardDto extends CreateBoardDto {
 
 export class BoardWithTasksDto extends BoardDto {
   @ApiProperty({
-    type: TaskWithUsersAndCommentsDto,
+    type: TaskDto,
     isArray: true,
   })
-  tasks: TaskWithUsersAndCommentsDto[];
+  tasks: TaskDto[];
 }

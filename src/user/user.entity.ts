@@ -49,6 +49,10 @@ export class User extends BaseEntity {
   @JoinTable()
   boards: Board[];
 
+  // @ManyToMany(() => Board, (board) => board.user)
+  // @JoinTable()
+  // ownBoards: Board[];
+
   @ManyToMany(() => Task, (task) => task.users)
   @JoinTable()
   tasks: Task[];

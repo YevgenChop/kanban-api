@@ -9,6 +9,8 @@ async function bootstrap() {
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
   );
 
+  app.enableCors();
+
   const config = new DocumentBuilder()
     .setTitle('Kanban Board API')
     .setDescription('The Kanban Board API description')

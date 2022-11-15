@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
@@ -36,5 +37,14 @@ export class AuthController {
   @Get('verify')
   public verifyUser(@Query() { token }: TokenDto): Promise<void> {
     return this.authService.verifyUser(token);
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Public()
+  @Post('resend-email')
+  public resendVerificationEmail(
+    @Body() { email }: { email: string },
+  ): Promise<void> {
+    return this.authService.resendVerificationEmail(email);
   }
 }

@@ -45,6 +45,14 @@ export class UserRepository {
     return this.userRepo.findOneOrFail({ where: options });
   }
 
+  public findOneByEmailWithToken(email: string): Promise<User> {
+    return this.userRepo
+      .createQueryBuilder('u')
+      .where('u.email = :email', { email })
+      .select(['u.verificationToken', 'u.verified'])
+      .getOne();
+  }
+
   public find(): Promise<User[]> {
     // TO DISCUSS: Should there be pagination and/or any sort of filters?
     return this.userRepo

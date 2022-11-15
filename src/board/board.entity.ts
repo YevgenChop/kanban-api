@@ -21,6 +21,9 @@ export class Board extends BaseEntity {
   @ManyToMany(() => User, (user) => user.boards)
   owner: User;
 
+  // @ManyToMany(() => User, (user) => user.boards)
+  // users: User[];
+
   @OneToMany(() => Task, (task) => task.board)
   tasks: Task[];
 
