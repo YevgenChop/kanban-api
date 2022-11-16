@@ -9,4 +9,10 @@ export class Status extends BaseEntity {
 
   @OneToMany(() => Task, (task) => task.status)
   tasks: Task[];
+
+  @Column({ default: false })
+  custom: boolean;
+
+  @Column({ nullable: true })
+  boardId: string;
 }

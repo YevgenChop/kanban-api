@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -31,16 +32,18 @@ export class StatusController {
 
   @GetStatusesDocs()
   @Get()
-  public getStatuses(): Promise<StatusDto[]> {
-    return this.statusService.getStatuses();
+  public getStatuses(
+    @Query('boardId', ParseUUIDPipe) boardId: string,
+  ): Promise<StatusDto[]> {
+    return this.statusService.getStatuses(boardId);
   }
 
   @Roles('admin')
   @HttpCode(HttpStatus.NO_CONTENT)
   @CreateStatusDocs()
   @Post()
-  public createStatus(@Body() { title }: CreateStatusDto): Promise<void> {
-    return this.statusService.createStatus(title);
+  public createStatus(@Body() dto: CreateStatusDto): Promise<void> {
+    return this.statusService.createStatus(dto);
   }
 
   @Roles('admin')
