@@ -47,9 +47,13 @@ export class AuthService {
     let user: User;
 
     try {
-      user = await this.userService.findOneByOrFail({ email: decoded.email });
+      user = await this.userService.findOneByEmailWithToken(decoded.email);
     } catch (error) {
       throw new UserNotFoundException();
+    }
+
+    if (user.verificationToken !== token) {
+      throw new InvalidJWTException();
     }
 
     await this.userService.updateVerifiedUser(user.id);
@@ -60,9 +64,9 @@ export class AuthService {
     if (!user) throw new UserNotFoundException();
     if (user.verified) throw new UserAlreadyVerifiedException();
 
-    await this.emailService.sendVerificationEmail(
-      email,
-      user.verificationToken,
-    );
+    const verificationToken = this.jwtService.sign({ email });
+    this.userService.updateUser(user.id, { verificationToken });
+
+    await this.emailService.sendVerificationEmail(email, verificationToken);
   }
 }

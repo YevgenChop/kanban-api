@@ -42,8 +42,11 @@ export class UserService {
     );
   }
 
-  public async updateUser(id: string, dto: UpdateUserDto): Promise<void> {
-    if (dto.password) {
+  public async updateUser(
+    id: string,
+    dto: UpdateUserDto | { verificationToken: string },
+  ): Promise<void> {
+    if ('password' in dto) {
       const { password, ...rest } = dto;
       const hashedPassword = await bcrypt.hashSync(password, 10);
 
@@ -94,5 +97,9 @@ export class UserService {
 
   public findOneByEmailWithToken(email: string): Promise<User> {
     return this.userRepo.findOneByEmailWithToken(email);
+  }
+
+  public deleteVerificationTokens(): Promise<void> {
+    return this.userRepo.deleteVerificationTokens();
   }
 }

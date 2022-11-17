@@ -18,7 +18,10 @@ export class UserRepository {
     );
   }
 
-  public async updateUser(id: string, dto: UpdateUserDto): Promise<void> {
+  public async updateUser(
+    id: string,
+    dto: UpdateUserDto | { verificationToken: string },
+  ): Promise<void> {
     await this.userRepo.update({ id }, { ...dto });
   }
 
@@ -49,7 +52,7 @@ export class UserRepository {
     return this.userRepo
       .createQueryBuilder('u')
       .where('u.email = :email', { email })
-      .select(['u.verificationToken', 'u.verified'])
+      .select(['u.verificationToken', 'u.verified', 'u.id'])
       .getOne();
   }
 
@@ -75,5 +78,9 @@ export class UserRepository {
       .addSelect('u.password')
       .where('u.login = :login', { login })
       .getOne();
+  }
+
+  public async deleteVerificationTokens(): Promise<void> {
+    await this.userRepo.update({}, { verificationToken: null });
   }
 }

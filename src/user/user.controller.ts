@@ -13,6 +13,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
@@ -70,5 +71,10 @@ export class UserController {
   @Get()
   public getUsers(): Promise<UserDto[]> {
     return this.userService.getUsers();
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  deleteVerificationTokens(): Promise<void> {
+    return this.userService.deleteVerificationTokens();
   }
 }

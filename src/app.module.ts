@@ -11,6 +11,7 @@ import configuration from './config/configuration';
 import { SendGridModule } from '@ntegral/nestjs-sendgrid';
 import { StatusModule } from './status/status.module';
 import { CommentModule } from './comment/comment.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { CommentModule } from './comment/comment.module';
     ConfigModule.forRoot({
       load: [configuration],
     }),
+    ScheduleModule.forRoot(),
     UserModule,
     AuthModule,
     BoardModule,
