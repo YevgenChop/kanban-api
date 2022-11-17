@@ -10,8 +10,23 @@ import { Task } from './task.entity';
 export class TaskRepository {
   constructor(@InjectRepository(Task) private taskRepo: Repository<Task>) {}
 
-  public createTask(dto: CreateTaskDto): Promise<Task> {
-    return this.taskRepo.save(this.taskRepo.create(dto));
+  public async createTask(
+    dto: Omit<CreateTaskDto, 'usersIds'>,
+    assignedUsers: User[],
+  ): Promise<Task> {
+    const task = await this.taskRepo.save(this.taskRepo.create(dto));
+
+    if (assignedUsers.length) {
+      task.users = assignedUsers;
+      await this.taskRepo.save(task);
+    }
+
+    return this.taskRepo
+      .createQueryBuilder('t')
+      .leftJoin('t.users', 'tu')
+      .addSelect(['tu.id', 'tu.name'])
+      .where('t.id = :id', { id: task.id })
+      .getOne();
   }
 
   public findOneByOrFail(options: Partial<Task>): Promise<Task> {

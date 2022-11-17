@@ -18,11 +18,18 @@ export class TaskService {
     private userService: UserService,
   ) {}
 
-  public async createTask(dto: CreateTaskDto): Promise<Task> {
+  public async createTask({ usersIds, ...dto }: CreateTaskDto): Promise<Task> {
     await this.statusService.findOneByIdOrFail(dto.statusId);
     await this.boardService.findOneByOrFail({ id: dto.boardId });
 
-    return this.taskRepo.createTask(dto);
+    const assignedUsers: User[] = [];
+
+    for (const id of usersIds) {
+      const user = await this.userService.findOne({ id });
+      assignedUsers.push(user);
+    }
+
+    return this.taskRepo.createTask(dto, assignedUsers);
   }
 
   public async updateTask(dto: UpdateTaskDto, id: string): Promise<void> {
