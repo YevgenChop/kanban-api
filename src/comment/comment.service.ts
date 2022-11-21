@@ -5,6 +5,7 @@ import { CommentRepository } from './comment.repository';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { Comment } from './comment.entity';
 import { CommentNotFoundException } from './errors/comment-not-found.exception';
+import { CommentDto } from './dto/comment.dto';
 
 @Injectable()
 export class CommentService {
@@ -30,6 +31,10 @@ export class CommentService {
     }
 
     return this.commentRepo.deleteComment(id);
+  }
+
+  public getCommentsByTaskId(taskId: string): Promise<CommentDto[]> {
+    return this.commentRepo.getCommentsByTaskId(taskId);
   }
 
   public async updateComment(

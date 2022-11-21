@@ -2,21 +2,25 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from '../decorators/user.decorator';
 import { User as UserEntity } from '../user/user.entity';
 import { CommentService } from './comment.service';
+import { CommentDto } from './dto/comment.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CreateCommentDocs } from './swagger/create-comment.swagger-docs';
 import { DeleteCommentDocs } from './swagger/delete-comment.swagger-docs';
+import { GetCommentsDocs } from './swagger/get-comments.swagger-docs';
 import { UpdateCommentDocs } from './swagger/update-comment.swagger-docs copy';
 
 @ApiTags('comment')
@@ -32,6 +36,14 @@ export class CommentController {
     @Body() dto: CreateCommentDto,
   ): Promise<void> {
     return this.commentService.createComment(dto, userId);
+  }
+
+  @GetCommentsDocs()
+  @Get()
+  public getCommentsByTaskId(
+    @Query('taskId', ParseUUIDPipe) taskId: string,
+  ): Promise<CommentDto[]> {
+    return this.commentService.getCommentsByTaskId(taskId);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)

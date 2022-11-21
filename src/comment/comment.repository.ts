@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Comment } from './comment.entity';
+import { CommentDto } from './dto/comment.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
 
 @Injectable()
@@ -19,6 +20,22 @@ export class CommentRepository {
 
   public async updateComment(id: string, commentText: string): Promise<void> {
     await this.commentRepo.update({ id }, { commentText });
+  }
+
+  public async getCommentsByTaskId(taskId: string): Promise<CommentDto[]> {
+    return this.commentRepo
+      .createQueryBuilder('c')
+      .leftJoin('c.user', 'cu')
+      .select([
+        'c.id as id',
+        'c.taskId as "taskId"',
+        'c.commentText as "commentText"',
+        'c.userId as "userId"',
+        'cu.name as username',
+      ])
+      .where('c.taskId = :taskId', { taskId })
+      .orderBy('c.createdDate', 'ASC')
+      .getRawMany();
   }
 
   public findOneByIdOrFail(id: string): Promise<Comment> {
