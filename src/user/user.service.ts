@@ -10,6 +10,7 @@ import { UserNotFoundException } from './errors/user-not-found.exeption';
 import { EmailService } from 'src/auth/email.service';
 import { UserDto } from './dto/user.dto';
 import { Board } from 'src/board/board.entity';
+import { UserSearchQueryDto } from './dto/user-search-query.dto';
 
 @Injectable()
 export class UserService {
@@ -64,6 +65,12 @@ export class UserService {
     const { verified, ...user } = await this.findOneByOrFail({ id });
 
     return user;
+  }
+
+  public async getUsersBySearchTerm(
+    dto: UserSearchQueryDto,
+  ): Promise<UserDto[]> {
+    return this.userRepo.findBySearchTerm(dto);
   }
 
   public async getUsers(): Promise<UserDto[]> {

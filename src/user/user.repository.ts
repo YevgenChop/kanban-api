@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from 'src/board/board.entity';
-import { Repository } from 'typeorm';
+import { Brackets, Repository, SelectQueryBuilder } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserSearchQueryDto } from './dto/user-search-query.dto';
 import { User } from './user.entity';
 
 @Injectable()
@@ -81,6 +82,24 @@ export class UserRepository {
       .getOne();
   }
 
+  public findBySearchTerm(dto: UserSearchQueryDto): Promise<User[]> {
+    const termBrackets = new Brackets((qb) => {
+      const term = `%${dto.term}%`;
+      qb.where('u.name ILIKE :term', { term })
+        .orWhere('u.email ILIKE :term', { term })
+        .orWhere('u.login ILIKE :term', { term });
+    });
+
+    let query = this.userRepo
+      .createQueryBuilder('u')
+      .where(termBrackets)
+      .select(['u.name', 'u.email', 'u.id']);
+
+    query = this.addOptionalSearchParams(dto, query);
+
+    return query.getMany();
+  }
+
   public async deleteVerificationTokens(): Promise<void> {
     await this.userRepo.update({}, { verificationToken: null });
   }
@@ -119,5 +138,28 @@ export class UserRepository {
     user.boards = user.boards.filter((b) => b.id !== board.id);
 
     await this.userRepo.save(user);
+  }
+
+  private addOptionalSearchParams(
+    dto: UserSearchQueryDto,
+    qb: SelectQueryBuilder<User>,
+  ): SelectQueryBuilder<User> {
+    if ('boardId' in dto) {
+      qb = qb.innerJoin('u.boards', 'ub').andWhere(
+        new Brackets((qb) => {
+          qb.where('ub.id = :boardId', {
+            boardId: dto.boardId,
+          });
+        }),
+      );
+    }
+
+    if ('skipUserIds' in dto) {
+      qb = qb.andWhere('u.id NOT IN (:...skipUserIds)', {
+        skipUserIds: dto.skipUserIds,
+      });
+    }
+
+    return qb;
   }
 }

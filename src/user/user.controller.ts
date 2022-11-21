@@ -10,6 +10,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -21,11 +22,13 @@ import { Public } from '../decorators/public.decorator';
 import { User } from '../decorators/user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserSearchQueryDto } from './dto/user-search-query.dto';
 import { UserDto } from './dto/user.dto';
 import { CreateUserDocs } from './swagger/create-user.swagger-docs';
 import { DeleteUserDocs } from './swagger/delete-user.swagger-docs';
 import { GetUserDocs } from './swagger/get-user.swagger-docs';
 import { GetUsersDocs } from './swagger/get-users.swagger-docs';
+import { SearchUsersDocs } from './swagger/search-users.swagger-docs';
 import { UpdateUserDocs } from './swagger/update-user.swagger-docs';
 import { UserService } from './user.service';
 
@@ -59,6 +62,12 @@ export class UserController {
   @Delete('/:id')
   public deleteUser(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     return this.userService.deleteUser(id);
+  }
+
+  @SearchUsersDocs()
+  @Get('search')
+  public searchUsersBy(@Query() dto: UserSearchQueryDto): Promise<UserDto[]> {
+    return this.userService.getUsersBySearchTerm(dto);
   }
 
   @GetUserDocs()
