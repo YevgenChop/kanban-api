@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { Board } from './board.entity';
-import { BoardQueryDto } from './dto/board-query.dto';
+import { BoardQueryDto, OwnBoardQueryDto } from './dto/board-query.dto';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 
@@ -10,7 +10,10 @@ import { UpdateBoardDto } from './dto/update-board.dto';
 export class BoardRepository {
   constructor(@InjectRepository(Board) private boardRepo: Repository<Board>) {}
 
-  public createBoard(dto: CreateBoardDto, userId: string): Promise<Board> {
+  public createBoard(
+    dto: Omit<CreateBoardDto, 'usersIds'>,
+    userId: string,
+  ): Promise<Board> {
     const board = this.boardRepo.create({ ...dto, ownerId: userId });
 
     return this.boardRepo.save(board);
@@ -20,18 +23,42 @@ export class BoardRepository {
     return this.boardRepo.findOneByOrFail(options);
   }
 
+  public findOneByIdWithUsers(id: string): Promise<Board> {
+    return this.boardRepo
+      .createQueryBuilder('b')
+      .leftJoin('b.users', 'bu')
+      .addSelect(['bu.id', 'bu.name', 'bu.email'])
+      .where('b.id = :id', { id })
+      .getOne();
+  }
+
   public async updateBoard(
-    dto: UpdateBoardDto,
+    dto: Omit<UpdateBoardDto, 'usersIds'>,
     boardId: string,
   ): Promise<void> {
     await this.boardRepo.update({ id: boardId }, dto);
+  }
+
+  public async getBoardAssignedUsers(boardId: string): Promise<string[]> {
+    const board = await this.boardRepo
+      .createQueryBuilder('b')
+      .innerJoin('b.users', 'bu')
+      .addSelect('bu.id')
+      .where('b.id = :boardId', { boardId })
+      .getOne();
+
+    if (!board) {
+      return [];
+    }
+
+    return board.users.map(({ id }) => id);
   }
 
   public findBy(options: Partial<Board>): Promise<Board[]> {
     return this.boardRepo.findBy(options);
   }
 
-  public find(dto: BoardQueryDto): Promise<Board[]> {
+  public find(dto: BoardQueryDto | OwnBoardQueryDto): Promise<Board[]> {
     let query = this.boardRepo
       .createQueryBuilder('b')
       .leftJoin('b.tasks', 'bt')
@@ -48,10 +75,16 @@ export class BoardRepository {
 
   private addOptionalParamsToQuery(
     qb: SelectQueryBuilder<Board>,
-    dto: BoardQueryDto,
+    dto: BoardQueryDto | OwnBoardQueryDto,
   ): SelectQueryBuilder<Board> {
-    if (dto.ownerId) {
+    if ('ownerId' in dto) {
       qb.andWhere('b.ownerId = :ownerId', { ownerId: dto.ownerId });
+    }
+
+    if ('userId' in dto) {
+      qb.innerJoin('b.users', 'bu', 'bu.id = :userId', {
+        userId: dto.userId,
+      });
     }
 
     if (dto.limit && dto.offset) {

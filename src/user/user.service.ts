@@ -9,6 +9,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserNotFoundException } from './errors/user-not-found.exeption';
 import { EmailService } from 'src/auth/email.service';
 import { UserDto } from './dto/user.dto';
+import { Board } from 'src/board/board.entity';
 
 @Injectable()
 export class UserService {
@@ -101,5 +102,17 @@ export class UserService {
 
   public deleteVerificationTokens(): Promise<void> {
     return this.userRepo.deleteVerificationTokens();
+  }
+
+  public saveUserOwnBoard(userId: string, board: Board): Promise<void> {
+    return this.userRepo.saveUserOwnBoard(userId, board);
+  }
+
+  public saveUserBoard(userId: string, board: Board): Promise<void> {
+    return this.userRepo.saveUserBoard(userId, board);
+  }
+
+  public removeUserBoard(userId: string, board: Board): Promise<void> {
+    return this.userRepo.removeUserBoard(userId, board);
   }
 }

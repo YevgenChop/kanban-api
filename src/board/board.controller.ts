@@ -24,7 +24,8 @@ import { CreateBoardDocs } from './swagger/create-board.swagger-docs';
 import { UpdateBoardDocs } from './swagger/update-board.swagger-docs';
 import { GetBoardsDocs } from './swagger/get-boards.swagger-docs';
 import { DeleteBoardDocs } from './swagger/delete-board.swagger-docs';
-import { BoardQueryDto } from './dto/board-query.dto';
+import { BoardQueryDto, OwnBoardQueryDto } from './dto/board-query.dto';
+import { GetBoardByIdDocs } from './swagger/get-board-by-id.swagger-docs';
 
 @ApiTags('board')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -54,8 +55,17 @@ export class BoardController {
 
   @GetBoardsDocs()
   @Get()
-  public getBoards(@Query() dto: BoardQueryDto): Promise<BoardWithTasksDto[]> {
+  public getBoards(
+    @Query() dto: OwnBoardQueryDto | BoardQueryDto,
+  ): Promise<BoardWithTasksDto[]> {
     return this.boardService.getBoards(dto);
+  }
+  @GetBoardByIdDocs()
+  @Get(':id')
+  public getBoardById(
+    @Param('id', ParseUUIDPipe) boardId: string,
+  ): Promise<BoardWithTasksDto> {
+    return this.boardService.getBoardById(boardId);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)

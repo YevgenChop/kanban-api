@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Board } from 'src/board/board.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -82,5 +83,41 @@ export class UserRepository {
 
   public async deleteVerificationTokens(): Promise<void> {
     await this.userRepo.update({}, { verificationToken: null });
+  }
+
+  public async saveUserOwnBoard(userId: string, board: Board): Promise<void> {
+    const user = await this.userRepo
+      .createQueryBuilder('u')
+      .leftJoinAndSelect('u.ownBoards', 'uob')
+      .where('u.id = :userId', { userId })
+      .getOne();
+
+    user.ownBoards.push(board);
+
+    await this.userRepo.save(user);
+  }
+
+  public async saveUserBoard(userId: string, board: Board): Promise<void> {
+    const user = await this.userRepo
+      .createQueryBuilder('u')
+      .leftJoinAndSelect('u.boards', 'ub')
+      .where('u.id = :userId', { userId })
+      .getOne();
+
+    user.boards.push(board);
+
+    await this.userRepo.save(user);
+  }
+
+  public async removeUserBoard(userId: string, board: Board): Promise<void> {
+    const user = await this.userRepo
+      .createQueryBuilder('u')
+      .leftJoinAndSelect('u.boards', 'ub')
+      .where('u.id = :userId', { userId })
+      .getOne();
+
+    user.boards = user.boards.filter((b) => b.id !== board.id);
+
+    await this.userRepo.save(user);
   }
 }
