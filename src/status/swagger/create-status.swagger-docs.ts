@@ -3,16 +3,18 @@ import {
   ApiBearerAuth,
   ApiConflictResponse,
   ApiForbiddenResponse,
-  ApiNoContentResponse,
+  ApiOkResponse,
   ApiOperation,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { StatusDto } from '../dto/status.dto';
 
 export const CreateStatusDocs = () => {
   return applyDecorators(
     ApiOperation({ summary: 'Create a status' }),
     ApiBearerAuth(),
-    ApiNoContentResponse({
+    ApiOkResponse({
+      type: StatusDto,
       description: 'The status has been created',
     }),
     ApiUnauthorizedResponse({

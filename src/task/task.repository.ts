@@ -60,10 +60,7 @@ export class TaskRepository {
   public findByBoardId(boardId: string): Promise<Task[]> {
     return this.taskRepo
       .createQueryBuilder('t')
-      .leftJoin('t.comments', 'tc')
-      .leftJoin('tc.user', 'tcu')
       .leftJoin('t.users', 'tu')
-      .addSelect(['tc.id', 'tc.commentText', 'tcu.name', 'tcu.id'])
       .addSelect(['tu.id', 'tu.name'])
       .where('t.boardId = :boardId', { boardId })
       .getMany();

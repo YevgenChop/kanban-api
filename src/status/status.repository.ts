@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateStatusDto } from './dto/create-status.dto';
+import { StatusDto } from './dto/status.dto';
 import { Status } from './status.entity';
 
 @Injectable()
@@ -30,8 +31,8 @@ export class StatusRepository {
     return this.statusRepo.findOneBy({ title });
   }
 
-  public async createStatus(dto: CreateStatusDto): Promise<void> {
-    await this.statusRepo.save(
+  public async createStatus(dto: CreateStatusDto): Promise<StatusDto> {
+    return this.statusRepo.save(
       this.statusRepo.create({ ...dto, custom: true }),
     );
   }

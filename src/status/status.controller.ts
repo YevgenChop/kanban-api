@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -11,6 +12,7 @@ import {
   Post,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UpdateStatusDto } from './dto/update-status.dto';
@@ -26,6 +28,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 
 @ApiTags('status')
 @UseGuards(RolesGuard)
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('status')
 export class StatusController {
   constructor(private statusService: StatusService) {}
@@ -39,10 +42,9 @@ export class StatusController {
   }
 
   @Roles('admin')
-  @HttpCode(HttpStatus.NO_CONTENT)
   @CreateStatusDocs()
   @Post()
-  public createStatus(@Body() dto: CreateStatusDto): Promise<void> {
+  public createStatus(@Body() dto: CreateStatusDto): Promise<StatusDto> {
     return this.statusService.createStatus(dto);
   }
 

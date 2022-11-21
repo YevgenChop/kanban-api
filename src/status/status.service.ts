@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateStatusDto } from './dto/create-status.dto';
+import { StatusDto } from './dto/status.dto';
 import { StatusAlreadyExistsException } from './errors/status-already-exists.exception';
 import { StatusNotFoundException } from './errors/status-not-found.exception';
 import { Status } from './status.entity';
@@ -13,7 +14,7 @@ export class StatusService {
     return this.statusRepo.find(boardId);
   }
 
-  public async createStatus(dto: CreateStatusDto): Promise<void> {
+  public async createStatus(dto: CreateStatusDto): Promise<StatusDto> {
     const status = await this.statusRepo.findOneByTitle(dto.title);
 
     if (status) throw new StatusAlreadyExistsException();

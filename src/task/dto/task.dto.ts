@@ -42,24 +42,3 @@ export class TaskDto {
   })
   users: { id: string; name: string }[];
 }
-
-export class TaskWithUsersAndCommentsDto extends TaskDto {
-  @ApiProperty({
-    isArray: true,
-    example: [
-      {
-        id: '123e4567-e89b-12d3-a456-426614174000',
-        commentText: 'This is my comment',
-        user: {
-          id: '123e4567-e89b-12d3-a456-426614174335',
-          name: 'John Doe',
-        },
-      },
-    ],
-  })
-  comments: {
-    id: string;
-    commentText: string;
-    user: { id: string; name: string };
-  }[];
-}
