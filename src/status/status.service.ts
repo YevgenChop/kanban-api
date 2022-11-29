@@ -15,7 +15,10 @@ export class StatusService {
   }
 
   public async createStatus(dto: CreateStatusDto): Promise<StatusDto> {
-    const status = await this.statusRepo.findOneByTitle(dto.title);
+    const status = await this.statusRepo.findOneBy({
+      title: dto.title,
+      boardId: dto.boardId,
+    });
 
     if (status) throw new StatusAlreadyExistsException();
 
@@ -29,12 +32,11 @@ export class StatusService {
   }
 
   public async updateStatus(id: string, title: string): Promise<void> {
-    await this.findOneByIdOrFail(id);
-
-    const status = await this.statusRepo.findOneByTitle(title);
-    if (status) throw new StatusAlreadyExistsException();
-
-    return this.statusRepo.updateStatus(id, title);
+    try {
+      return await this.statusRepo.updateStatus(id, title);
+    } catch (error) {
+      throw new StatusAlreadyExistsException();
+    }
   }
 
   public async findOneByIdOrFail(id: string): Promise<Status> {

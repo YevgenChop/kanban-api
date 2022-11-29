@@ -27,8 +27,8 @@ export class StatusRepository {
     return this.statusRepo.findOneByOrFail({ id });
   }
 
-  public findOneByTitle(title: string): Promise<Status> {
-    return this.statusRepo.findOneBy({ title });
+  public findOneBy(options: Partial<Status>): Promise<Status> {
+    return this.statusRepo.findOneBy(options);
   }
 
   public async createStatus(dto: CreateStatusDto): Promise<StatusDto> {

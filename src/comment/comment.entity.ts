@@ -8,7 +8,7 @@ export class Comment extends BaseEntity {
   @Column()
   commentText: string;
 
-  @ManyToOne(() => Task, (task) => task.comments)
+  @ManyToOne(() => Task, (task) => task.comments, { onDelete: 'CASCADE' })
   task: Task;
 
   @Column()

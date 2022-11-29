@@ -41,4 +41,10 @@ export class TaskDto {
     example: [{ id: '123e4567-e89b-12d3-a456-426614174000', name: 'John Doe' }],
   })
   users: { id: string; name: string }[];
+
+  @ApiProperty({
+    type: 'string',
+    example: '2022-11-23T16:26:11.045Z',
+  })
+  createdDate: Date;
 }

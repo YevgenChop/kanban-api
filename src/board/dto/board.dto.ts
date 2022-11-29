@@ -20,6 +20,12 @@ export class BoardDto {
 
   @ApiProperty({ type: 'string', example: 'This is a new board' })
   description: string;
+
+  @ApiProperty({
+    type: 'string',
+    example: '2022-11-23T16:26:11.045Z',
+  })
+  createdDate: Date;
 }
 
 export class BoardWithTasksDto extends BoardDto {

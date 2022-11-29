@@ -61,6 +61,7 @@ export class TaskRepository {
     return this.taskRepo
       .createQueryBuilder('t')
       .leftJoin('t.users', 'tu')
+      .addSelect('t.createdDate')
       .addSelect(['tu.id', 'tu.name'])
       .where('t.boardId = :boardId', { boardId })
       .getMany();

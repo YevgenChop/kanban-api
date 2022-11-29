@@ -22,4 +22,16 @@ export class CommentDto extends CreateCommentDto {
     example: 'John Doe',
   })
   username: string;
+
+  @ApiProperty({
+    type: 'string',
+    example: '2022-11-23T16:26:11.045Z',
+  })
+  updatedDate: string;
+
+  @ApiProperty({
+    type: 'string',
+    example: '2022-11-23T16:26:11.045Z',
+  })
+  createdDate: string;
 }

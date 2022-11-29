@@ -27,6 +27,7 @@ export class BoardRepository {
     return this.boardRepo
       .createQueryBuilder('b')
       .leftJoin('b.users', 'bu')
+      .addSelect('b.createdDate')
       .addSelect(['bu.id', 'bu.name', 'bu.email'])
       .where('b.id = :id', { id })
       .getOne();

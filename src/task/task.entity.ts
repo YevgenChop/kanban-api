@@ -24,13 +24,13 @@ export class Task extends BaseEntity {
   @ManyToOne(() => Board, (board) => board.tasks)
   board: Board;
 
-  @ManyToOne(() => Status, (status) => status.tasks)
+  @ManyToOne(() => Status, (status) => status.tasks, { onDelete: 'CASCADE' })
   status: Status;
 
-  @ManyToMany(() => User, (user) => user.tasks)
+  @ManyToMany(() => User, (user) => user.tasks, { onDelete: 'CASCADE' })
   users: User[];
 
-  @OneToMany(() => Comment, (comment) => comment.task)
+  @OneToMany(() => Comment, (comment) => comment.task, { cascade: true })
   comments: Comment[];
 
   @Column()

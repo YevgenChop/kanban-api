@@ -28,6 +28,8 @@ export class CommentRepository {
       .leftJoin('c.user', 'cu')
       .select([
         'c.id as id',
+        'c.createdDate as "createdDate"',
+        'c.updatedDate as "updatedDate"',
         'c.taskId as "taskId"',
         'c.commentText as "commentText"',
         'c.userId as "userId"',

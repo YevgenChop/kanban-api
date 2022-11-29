@@ -1,6 +1,5 @@
 import {
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -11,7 +10,6 @@ import {
   Patch,
   Post,
   Query,
-  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { User as UserEntity } from '../user/user.entity';
@@ -28,7 +26,6 @@ import { BoardQueryDto, OwnBoardQueryDto } from './dto/board-query.dto';
 import { GetBoardByIdDocs } from './swagger/get-board-by-id.swagger-docs';
 
 @ApiTags('board')
-@UseInterceptors(ClassSerializerInterceptor)
 @Controller('board')
 export class BoardController {
   constructor(private boardService: BoardService) {}

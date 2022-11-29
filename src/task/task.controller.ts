@@ -1,6 +1,5 @@
 import {
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -12,7 +11,6 @@ import {
   Post,
   Query,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from '../decorators/user.decorator';
@@ -31,7 +29,6 @@ import { AssignTaskDocs } from './swagger/assign-task.swagger-docs';
 import { UnassignTaskDocs } from './swagger/unassign-task.swagger-docs';
 
 @ApiTags('task')
-@UseInterceptors(ClassSerializerInterceptor)
 @Controller('task')
 export class TaskController {
   constructor(private taskService: TaskService) {}

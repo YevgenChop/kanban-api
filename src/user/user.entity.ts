@@ -53,7 +53,7 @@ export class User extends BaseEntity {
   @JoinTable()
   boards: Board[];
 
-  @ManyToMany(() => Task, (task) => task.users)
+  @ManyToMany(() => Task, (task) => task.users, { onDelete: 'CASCADE' })
   @JoinTable()
   tasks: Task[];
 
