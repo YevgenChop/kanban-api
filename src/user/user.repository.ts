@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Board } from 'src/board/board.entity';
+import { TokensDto } from '../auth/dto/token.dto';
+import { Board } from '../board/board.entity';
 import { Brackets, Repository, SelectQueryBuilder } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -22,9 +23,9 @@ export class UserRepository {
 
   public async updateUser(
     id: string,
-    dto: UpdateUserDto | { verificationToken: string },
+    dto: UpdateUserDto | Partial<TokensDto>,
   ): Promise<void> {
-    await this.userRepo.update({ id }, { ...dto });
+    await this.userRepo.update({ id }, dto);
   }
 
   public async softDeleteUser(id: string): Promise<void> {
@@ -50,7 +51,7 @@ export class UserRepository {
     return this.userRepo.findOneOrFail({ where: options });
   }
 
-  public findOneByEmailWithToken(email: string): Promise<User> {
+  public findOneByEmailWithVerificationToken(email: string): Promise<User> {
     return this.userRepo
       .createQueryBuilder('u')
       .where('u.email = :email', { email })
@@ -58,8 +59,15 @@ export class UserRepository {
       .getOne();
   }
 
+  public findOneByIdWithRefreshToken(id: string): Promise<User> {
+    return this.userRepo
+      .createQueryBuilder('u')
+      .where('u.id = :id', { id })
+      .select(['u.refreshToken'])
+      .getOne();
+  }
+
   public find(): Promise<User[]> {
-    // TO DISCUSS: Should there be pagination and/or any sort of filters?
     return this.userRepo
       .createQueryBuilder('u')
       .leftJoin('u.tasks', 't')

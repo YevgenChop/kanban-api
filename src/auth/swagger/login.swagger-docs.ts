@@ -6,7 +6,7 @@ import {
   ApiOperation,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { UserWithTokenDto } from 'src/user/dto/user.dto';
+import { UserWithTokensDto } from 'src/user/dto/user.dto';
 import { LoginDto } from '../dto/login.dto';
 
 export const LoginDocs = () => {
@@ -14,7 +14,7 @@ export const LoginDocs = () => {
     ApiOperation({ summary: 'Log in to get an access token' }),
     ApiOkResponse({
       description: `The user's data with an access token`,
-      type: UserWithTokenDto,
+      type: UserWithTokensDto,
     }),
     ApiNotFoundResponse({
       description: `The user with the given login doesn't exist`,

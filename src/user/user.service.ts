@@ -11,6 +11,7 @@ import { EmailService } from 'src/auth/email.service';
 import { UserDto } from './dto/user.dto';
 import { Board } from 'src/board/board.entity';
 import { UserSearchQueryDto } from './dto/user-search-query.dto';
+import { TokensDto } from 'src/auth/dto/token.dto';
 
 @Injectable()
 export class UserService {
@@ -46,7 +47,7 @@ export class UserService {
 
   public async updateUser(
     id: string,
-    dto: UpdateUserDto | { verificationToken: string },
+    dto: UpdateUserDto | Partial<TokensDto>,
   ): Promise<void> {
     if ('password' in dto) {
       const { password, ...rest } = dto;
@@ -103,8 +104,12 @@ export class UserService {
     }
   }
 
-  public findOneByEmailWithToken(email: string): Promise<User> {
-    return this.userRepo.findOneByEmailWithToken(email);
+  public findOneByEmailWithVerificationToken(email: string): Promise<User> {
+    return this.userRepo.findOneByEmailWithVerificationToken(email);
+  }
+
+  public findOneByIdWithRefreshToken(id: string): Promise<User> {
+    return this.userRepo.findOneByIdWithRefreshToken(id);
   }
 
   public deleteVerificationTokens(): Promise<void> {

@@ -27,11 +27,16 @@ export class UserDto {
   id: string;
 }
 
-export class UserWithTokenDto extends UserDto {
+export class UserWithTokensDto extends UserDto {
   @ApiProperty({ type: 'string', example: 'access_token' })
   @IsString()
   @IsNotEmpty()
   token: string;
+
+  @ApiProperty({ type: 'string', example: 'refresh_token' })
+  @IsString()
+  @IsNotEmpty()
+  refreshToken: string;
 }
 
 export class UserWithTasksDto extends UserDto {

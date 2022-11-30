@@ -45,6 +45,9 @@ export class User extends BaseEntity {
   @Column({ nullable: true, select: false })
   verificationToken: string | null;
 
+  @Column({ nullable: true, select: false })
+  refreshToken: string | null;
+
   @ManyToMany(() => Board, (board) => board.owner)
   @JoinTable()
   ownBoards: Board[];
