@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 import { User, UserRole } from '../user/user.entity';
 import { Board } from './board.entity';
 import { BoardRepository } from './board.repository';

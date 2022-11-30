@@ -6,9 +6,9 @@ import { Task } from './task.entity';
 import { TaskRepository } from './task.repository';
 import { TaskService } from './task.service';
 import { Status } from '../status/status.entity';
-import { BoardModule } from 'src/board/board.module';
-import { StatusModule } from 'src/status/status.module';
-import { UserModule } from 'src/user/user.module';
+import { BoardModule } from '../board/board.module';
+import { StatusModule } from '../status/status.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [

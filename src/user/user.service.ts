@@ -7,11 +7,11 @@ import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserNotFoundException } from './errors/user-not-found.exeption';
-import { EmailService } from 'src/auth/email.service';
+import { EmailService } from '../auth/email.service';
 import { UserDto } from './dto/user.dto';
-import { Board } from 'src/board/board.entity';
+import { Board } from '../board/board.entity';
 import { UserSearchQueryDto } from './dto/user-search-query.dto';
-import { TokensDto } from 'src/auth/dto/token.dto';
+import { TokensDto } from '../auth/dto/token.dto';
 
 @Injectable()
 export class UserService {

@@ -6,7 +6,7 @@ import {
   ApiOperation,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { UserWithTokensDto } from 'src/user/dto/user.dto';
+import { UserWithTokensDto } from '../../user/dto/user.dto';
 import { LoginDto } from '../dto/login.dto';
 
 export const LoginDocs = () => {

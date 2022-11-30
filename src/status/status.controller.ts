@@ -23,8 +23,8 @@ import { DeleteStatusDocs } from './swagger/delete-status.swagger-docs';
 import { GetStatusesDocs } from './swagger/get-statuses.swagger-docs';
 import { CreateStatusDto } from './dto/create-status.dto';
 import { UpdateStatusDocs } from './swagger/update-status.swagger-docs';
-import { Roles } from 'src/decorators/roles.decorator';
-import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { RolesGuard } from '../guards/roles.guard';
 
 @ApiTags('status')
 @UseGuards(RolesGuard)
