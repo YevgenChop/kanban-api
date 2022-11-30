@@ -63,7 +63,7 @@ export class UserRepository {
     return this.userRepo
       .createQueryBuilder('u')
       .where('u.id = :id', { id })
-      .select(['u.refreshToken'])
+      .select(['u.refreshToken', 'u.id'])
       .getOne();
   }
 
