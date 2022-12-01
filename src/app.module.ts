@@ -12,28 +12,11 @@ import { SendGridModule } from '@ntegral/nestjs-sendgrid';
 import { StatusModule } from './status/status.module';
 import { CommentModule } from './comment/comment.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { dataSourceOptions } from './data-source';
 
 @Module({
   imports: [
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => {
-        return {
-          type: 'postgres',
-          username: configService.get('DB_USER'),
-          password: configService.get('DB_PASS'),
-          port: parseInt(configService.get('DB_PORT')),
-          host: configService.get('DB_HOST'),
-          database: configService.get('DB_NAME'),
-          migrations: ['dist/migrations/*{.ts,.js}'],
-          migrationsTableName: 'migrations_typeorm',
-          migrationsRun: configService.get('DB_MIGRATIONS_RUN') === 'true',
-          synchronize: configService.get('DB_SYNCRONIZE') === 'true',
-          entities: ['dist/**/*.entity{.ts,.js}'],
-        };
-      },
-      inject: [ConfigService],
-    }),
+    TypeOrmModule.forRoot(dataSourceOptions),
     SendGridModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
