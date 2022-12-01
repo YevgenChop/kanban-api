@@ -12,6 +12,7 @@ import { UserDto } from './dto/user.dto';
 import { Board } from '../board/board.entity';
 import { UserSearchQueryDto } from './dto/user-search-query.dto';
 import { TokensDto } from '../auth/dto/token.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
@@ -19,6 +20,7 @@ export class UserService {
     private userRepo: UserRepository,
     private jwtService: JwtService,
     private emailService: EmailService,
+    private configService: ConfigService,
   ) {}
 
   public async createUser({
@@ -29,7 +31,10 @@ export class UserService {
     if (userExists) throw new UserAlreadyExistsException();
 
     const hashedPassword = await bcrypt.hashSync(plainTextPassword, 10);
-    const verificationToken = this.jwtService.sign({ email: userData.email });
+    const verificationToken = this.jwtService.sign(
+      { email: userData.email },
+      { secret: this.configService.get('JWT_SECRET') },
+    );
 
     await this.userRepo.createUser(
       {
